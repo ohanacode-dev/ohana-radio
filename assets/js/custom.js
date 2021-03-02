@@ -51,7 +51,10 @@ function mpc_title(){
 }
 
 function pwr_off(){
-    send_cmd('pwr_off', 0);
+    var r = confirm("Turn off computer?");
+    if (r == true) {
+      send_cmd('pwr_off', 0);
+    }
 }
 
 (function() {

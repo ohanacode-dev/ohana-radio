@@ -6,8 +6,8 @@ import os
 import subprocess
 import json
 
-WEB_PORT = 9000
-#WEB_PORT = 80 	# Use this as root
+#WEB_PORT = 9000
+WEB_PORT = 80 	# Use this as root
 
 SCRIPT_PATH = os.path.dirname(os.path.realpath(__file__))
 PLS_PATH = os.path.join(os.path.expanduser('~'), 'playlists')
