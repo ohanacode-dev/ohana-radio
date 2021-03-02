@@ -1,0 +1,169 @@
+body{
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+}
+
+.container{
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0;
+}
+
+a:link, a:visited, a:hover, a:active {
+    text-decoration: none;
+    color: #2f4f4f;
+    opacity: 0.7;
+}
+
+ol{
+    margin: 0;
+    padding: 0 5px 0 5em;
+    color: black;
+}
+
+li {
+    padding: 0;
+    height: 34px;
+    border-radius: 10px;
+    position: relative;
+    margin: 2px;
+}
+
+.url_ctrl {
+    background: white;
+    z-index: 13;
+    position: absolute;
+    right: 5px;
+    top: 10px;
+    border-radius: 10px;
+}
+
+
+.url_name {
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0.7;
+    padding: 4px 10px;
+    margin: 0;
+    overflow: hidden;
+}
+
+a:hover, .url_name:hover, #multimedia_ctrl p:hover{
+    opacity: 1;
+}
+
+.active_stream{
+    border: 1px solid green;
+}
+
+#title_row{
+    display: inline-block;
+    width: 95%;
+    padding: 10px 5px 20px 5em;
+    padding-left: 4em;
+}
+
+#title_row h1 {
+    font-size: 2em;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    max-width: 80%;
+}
+
+#title_row h1 span{
+    opacity: 0.5;
+    font-size: 0.7em;
+}
+
+#song_title{
+    width: 100%;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    background-color: black;
+    color: #e2bf99;
+    padding: 10px;
+    margin: 0;
+    z-index: 3;
+}
+
+#multimedia_ctrl{
+    height: 100vh;
+    background-color: black;
+    color: white;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 2;
+}
+
+#multimedia_ctrl a, #multimedia_ctrl p{
+    padding: 0;
+    margin: 10px 2px;
+    width: 2em;
+    height: 1.5em;
+    display: block;
+    text-align: center;
+    line-height: 1.5em;
+    font-size: 1.5em;
+    color: #e2bf99;
+    cursor: pointer;
+    opacity: 0.7;
+}
+
+#add_station{
+    font-size: 3em;
+    color: #e2bf99;
+    margin: 10px 2px 10px 2px;
+}
+
+#add_station span{
+    opacity: 0.7;
+}
+
+#add_station span:hover{
+    opacity: 1;
+}
+
+#sort_cmd{
+    width: 1em;
+    font-size: 1.5em;
+    float: left;
+    margin-top: 10px;
+    margin-left: 0;
+}
+
+#multimedia_ctrl hr{
+    margin: 20px 0;
+}
+
+#file_upload{
+    width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+#file_upload + label {
+    padding: 0;
+    margin: 10px 2px;
+    width: 2em;
+    height: 1.5em;
+    display: block;
+    text-align: center;
+    line-height: 1.5em;
+    font-size: 1.5em;
+    color: #e2bf99;
+    opacity: 0.7;
+}
+
+#file_upload + label:hover{
+    opacity: 1;
+}
