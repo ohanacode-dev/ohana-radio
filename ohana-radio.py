@@ -37,7 +37,7 @@ BT_DEV_ID = "MX400 - A2DP"
 
 SYS_CMD_VOL_UP = ["amixer", "-D", "bluealsa", "set", BT_DEV_ID, "10%+"]
 SYS_CMD_VOL_DOWN = ["amixer", "-D", "bluealsa", "set", BT_DEV_ID, "10%-"]
-SYS_CMD_PWR_OFF = ['poweroff']
+SYS_CMD_PWR_OFF = ['/usr/sbin/poweroff']
 
 
 IP = None
