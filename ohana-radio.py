@@ -6,8 +6,8 @@ import os
 import subprocess
 import json
 
-#WEB_PORT = 9000
-WEB_PORT = 80 	# Use this as root
+WEB_PORT = 9000
+#WEB_PORT = 80 	# Use this as root
 
 SCRIPT_PATH = os.path.dirname(os.path.realpath(__file__))
 PLS_PATH = os.path.join(os.path.expanduser('~'), 'playlists')
@@ -37,6 +37,7 @@ BT_DEV_ID = "MX400 - A2DP"
 
 SYS_CMD_VOL_UP = ["amixer", "-D", "bluealsa", "set", BT_DEV_ID, "10%+"]
 SYS_CMD_VOL_DOWN = ["amixer", "-D", "bluealsa", "set", BT_DEV_ID, "10%-"]
+SYS_CMD_PWR_OFF = ['poweroff']
 
 
 IP = None
@@ -285,6 +286,9 @@ def do_command(command, item_id=0):
     elif command == "vol_up":
         cmd = SYS_CMD_VOL_UP
         run_process(cmd)
+    elif command == "pwr_off":
+        cmd = SYS_CMD_PWR_OFF
+        run_process(cmd)
     elif command == "mpc_stop":
         cmd = ['mpc', CMD_STOP]
         run_process(cmd)
@@ -295,6 +299,7 @@ def do_command(command, item_id=0):
         song_title = get_song_title()
         data = {'song_title': song_title}
         emit('playlist', json.dumps(data))
+
     elif command == "mpc_play":
         if (item_id > 0) and (item_id <= len(url_list)):
             cmd = ['mpc', CMD_PLAY, str(item_id)]

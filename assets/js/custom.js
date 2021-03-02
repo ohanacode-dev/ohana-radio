@@ -50,6 +50,10 @@ function mpc_title(){
     send_cmd('mpc_title', 0);
 }
 
+function pwr_off(){
+    send_cmd('pwr_off', 0);
+}
+
 (function() {
     socket = io.connect('http://' + document.domain + ':' + location.port);
 
