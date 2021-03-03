@@ -5,9 +5,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
   <title>Ohana Radio</title>
-
+  <script type="text/javascript" src="https://kit.fontawesome.com/73c8905fed.js" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="{{url_for('static', filename='css/custom.css')}}">
-  <link rel="stylesheet" href="{{url_for('static', filename='css/fonts.css')}}">
 </head>
 <body>
   <div class="container">
@@ -36,6 +35,7 @@
     <p onclick="volume_up();" title="Volume +"><i class="fa fa-volume-up"></i></p>
     <p onclick="volume_down();" title="Volume -"><i class="fa fa-volume-down"></i></p>
     <p onclick="mpc_stop();" title="Stop current"><i class="fa fa-pause"></i></p>
+    <p onclick="bt_list();" title="List bluetooth devices"><i class="fa fa-bluetooth"></i></p>
   </div>
   <script type="text/javascript" src="{{url_for('static', filename='js/socket.io.js')}}"></script>
   <script type="text/javascript" src="{{url_for('static', filename='js/custom.js')}}"></script>

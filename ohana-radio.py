@@ -5,9 +5,10 @@ from flask_socketio import SocketIO, emit
 import os
 import subprocess
 import json
+from bt_dev import get_bt_client_list, connect_bt_device, disconnect_bt
 
-#WEB_PORT = 9000
-WEB_PORT = 80 	# Use this as root
+WEB_PORT = 9000
+#WEB_PORT = 80 	# Use this as root
 
 SCRIPT_PATH = os.path.dirname(os.path.realpath(__file__))
 PLS_PATH = os.path.join(os.path.expanduser('~'), 'playlists')
@@ -39,9 +40,9 @@ SYS_CMD_VOL_UP = ["amixer", "-D", "bluealsa", "set", BT_DEV_ID, "10%+"]
 SYS_CMD_VOL_DOWN = ["amixer", "-D", "bluealsa", "set", BT_DEV_ID, "10%-"]
 SYS_CMD_PWR_OFF = ['/usr/sbin/poweroff']
 
-
 IP = None
 stop_flag = False
+bt_dev_id = None
 
 
 def run_process(command_list):
@@ -158,7 +159,6 @@ def home():
     global current
 
     # print('request:', request)
-
     load_cfg()
 
     action = request.args.get('action', '')
@@ -306,6 +306,11 @@ def do_command(command, item_id=0):
             run_process(cmd)
 
             report()
+
+    elif command == "bt_list":
+        bt_dev_list = get_bt_client_list()
+        emit('bt_devs', json.dumps(bt_dev_list))
+
     else:
         print("Unknown command:", command)
 

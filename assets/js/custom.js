@@ -50,6 +50,10 @@ function mpc_title(){
     send_cmd('mpc_title', 0);
 }
 
+function bt_list(){
+    send_cmd('bt_list', 0);
+}
+
 function pwr_off(){
     var r = confirm("Turn off computer?");
     if (r == true) {
@@ -86,6 +90,12 @@ function pwr_off(){
                 list.appendChild(item);
             }
         }
+    });
+
+    socket.on('bt_devs', function(msg) {
+        var data = JSON.parse(msg);
+
+        console.log(data)
     });
 
     window.setInterval(mpc_title, 10000);
