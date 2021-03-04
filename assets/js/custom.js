@@ -52,13 +52,31 @@ function mpc_title(){
 
 function bt_list(){
     send_cmd('bt_list', 0);
+    document.getElementById("bt_overlay").style.display = "inline-block";
+    document.getElementById("bt-busy").style.display = "inline-block";
+    document.getElementById("bt_dev_list").innerHTML = "";
 }
+
+function bt_connect(dev_id){
+    send_cmd('bt_connect', dev_id);
+    close_bt_overlay();
+}
+
+function bt_disconnect(){
+    send_cmd('bt_disconnect', 0);
+}
+
 
 function pwr_off(){
     var r = confirm("Turn off computer?");
     if (r == true) {
       send_cmd('pwr_off', 0);
     }
+}
+
+function close_bt_overlay(){
+    document.getElementById("bt_overlay").style.display = "none";
+    document.getElementById("bt_dev_list").innerHTML = "";
 }
 
 (function() {
@@ -93,9 +111,20 @@ function pwr_off(){
     });
 
     socket.on('bt_devs', function(msg) {
-        var data = JSON.parse(msg);
+        document.getElementById("bt-busy").style.display = "none";
+        var items = JSON.parse(msg);
+        var list = document.getElementById("bt_dev_list");
+        list.innerHTML = "";
 
-        console.log(data)
+        for(var i = 0; i < items.length; i++) {
+            var item_data = items[i];
+            if(item_data.length == 2){
+                var item = document.createElement('dev');
+                item.classList.add("bt_device");
+                item.innerHTML = '<p onclick="bt_connect(\'' + item_data[0] + '\')">' + item_data[1] + "</p>"
+                list.appendChild(item);
+            }
+        }
     });
 
     window.setInterval(mpc_title, 10000);

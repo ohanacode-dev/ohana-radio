@@ -36,7 +36,17 @@
     <p onclick="volume_down();" title="Volume -"><i class="fa fa-volume-down"></i></p>
     <p onclick="mpc_stop();" title="Stop current"><i class="fa fa-pause"></i></p>
     <p onclick="bt_list();" title="List bluetooth devices"><i class="fa fa-bluetooth"></i></p>
+    <p onclick="bt_disconnect();" title="Disconnect bluetooth device"><i class="fa fa-bluetooth-b"></i></p>
   </div>
+
+  <div id="bt_overlay">
+    <p id="search_btn" onclick="bt_list();"><i class="fa fa-search"></i></p>
+    <p id="close_btn" onclick="close_bt_overlay();"><i class="fa fa-times-circle"></i></p>
+
+    <i class="fas fa-spinner fa-spin" id="bt-busy"></i>
+    <div id="bt_dev_list"></div>
+  </div>
+
   <script type="text/javascript" src="{{url_for('static', filename='js/socket.io.js')}}"></script>
   <script type="text/javascript" src="{{url_for('static', filename='js/custom.js')}}"></script>
 </body>

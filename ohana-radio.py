@@ -5,7 +5,7 @@ from flask_socketio import SocketIO, emit
 import os
 import subprocess
 import json
-from bt_dev import get_bt_client_list, connect_bt_device, disconnect_bt
+from bluetooth_ctrl import BluetoothController
 
 WEB_PORT = 9000
 #WEB_PORT = 80 	# Use this as root
@@ -13,6 +13,7 @@ WEB_PORT = 9000
 SCRIPT_PATH = os.path.dirname(os.path.realpath(__file__))
 PLS_PATH = os.path.join(os.path.expanduser('~'), 'playlists')
 PLS_NAME = 'playlist'
+CONFIG_FILE = os.path.join(os.path.expanduser('~'), '.ohanaradio.cfg')
 
 app = Flask(__name__, static_url_path='/assets', static_folder='assets')
 app.secret_key = 'OCRadio1303153011SecretKey'
@@ -34,20 +35,17 @@ CMD_MOVE = "move"
 CMD_SAVE = "save"
 CMD_LOAD = "load"
 
-BT_DEV_ID = "MX400 - A2DP"
-
-SYS_CMD_VOL_UP = ["amixer", "-D", "bluealsa", "set", BT_DEV_ID, "10%+"]
-SYS_CMD_VOL_DOWN = ["amixer", "-D", "bluealsa", "set", BT_DEV_ID, "10%-"]
 SYS_CMD_PWR_OFF = ['/usr/sbin/poweroff']
 
 IP = None
 stop_flag = False
-bt_dev_id = None
+
+BT_ctrl = BluetoothController()
 
 
 def run_process(command_list):
     result = subprocess.run(command_list, stdout=subprocess.PIPE)
-    print("Running: {}".format(command_list))
+    # print("Running: {}".format(command_list))
 
     return str(result.stdout, 'utf-8')
 
@@ -70,8 +68,6 @@ def sort_playlist():
     # Get sorted playlist
     sorted_list = url_list.copy()
     sorted_list.sort()
-
-    print(sorted_list)
 
     # Check actual positions compared to sorted
     for i in range(0, len(sorted_list)):
@@ -105,7 +101,7 @@ def get_mpc_current():
 def get_song_title():
     cur_cmd = ['mpc', CMD_CURRENT]
     current_text = run_process(cur_cmd)
-    print("CURRENT:", current_text)
+    # print("CURRENT:", current_text)
 
     if len(current_text) > 2:
         try:
@@ -116,6 +112,46 @@ def get_song_title():
         song_title = ''
 
     return song_title
+
+
+def read_cfg_file():
+    global CONFIG_FILE
+    global PLS_PATH
+
+    if not os.path.isfile(CONFIG_FILE):
+        cfg_file = open(CONFIG_FILE, "w")
+        cfg_file.close()
+
+    if os.path.isfile(CONFIG_FILE):
+        cfg_file = open(CONFIG_FILE, "r")
+        try:
+            data = json.loads(cfg_file.read())
+        except:
+            data = {}
+        cfg_file.close()
+
+    pls_path = data.get('PLS_PATH', PLS_PATH)
+    PLS_PATH = pls_path
+
+    bt_dev_mac = data.get('BT_DEV_MAC', '')
+    BT_ctrl.set_default_bt_dev_mac(bt_dev_mac)
+
+    bt_dev_name = data.get('BT_DEV_NAME', '')
+    BT_ctrl.set_default_bt_dev_name(bt_dev_name)
+
+    BT_ctrl.connect_bt_device(bt_dev_mac)
+
+
+def update_cfg_file():
+    data = {
+        'PLS_PATH': PLS_PATH,
+        'BT_DEV_NAME': BT_ctrl.get_default_bt_dev_name(),
+        'BT_DEV_MAC': BT_ctrl.get_default_bt_dev_mac()
+    }
+
+    cfg_file = open(CONFIG_FILE, "w")
+    cfg_file.write(json.dumps(data))
+    cfg_file.close()
 
 
 def load_cfg():
@@ -169,8 +205,6 @@ def home():
 
         if url != '':
             playlist = get_playlist()
-            # print('ADD:', url)
-            # print(playlist)
 
             if url not in playlist:
                 cmd = ['mpc', CMD_ADD, url]
@@ -281,11 +315,9 @@ def do_connect():
 @socketio.on('command')
 def do_command(command, item_id=0):
     if command == "vol_dn":
-        cmd = SYS_CMD_VOL_DOWN
-        run_process(cmd)
+        BT_ctrl.bt_volume_down()
     elif command == "vol_up":
-        cmd = SYS_CMD_VOL_UP
-        run_process(cmd)
+        BT_ctrl.bt_volume_up()
     elif command == "pwr_off":
         cmd = SYS_CMD_PWR_OFF
         run_process(cmd)
@@ -308,8 +340,16 @@ def do_command(command, item_id=0):
             report()
 
     elif command == "bt_list":
-        bt_dev_list = get_bt_client_list()
+        bt_dev_list = BT_ctrl.get_bt_client_list()
         emit('bt_devs', json.dumps(bt_dev_list))
+
+    elif command == "bt_connect":
+        BT_ctrl.disconnect_bt()
+        BT_ctrl.connect_bt_device(item_id)
+        update_cfg_file()
+
+    elif command == "bt_disconnect":
+        BT_ctrl.disconnect_bt()
 
     else:
         print("Unknown command:", command)
@@ -322,6 +362,6 @@ if __name__ == '__main__':
     run_process(cmd)
 
     load_cfg()
-    #app.run('0.0.0.0', WEB_PORT, threaded=True, debug=False)
+    read_cfg_file()
     socketio.run(app, host='0.0.0.0', port=WEB_PORT, debug=False)
     stop_flag = True

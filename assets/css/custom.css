@@ -167,3 +167,68 @@ a:hover, .url_name:hover, #multimedia_ctrl p:hover{
 #file_upload + label:hover{
     opacity: 1;
 }
+
+#bt_overlay{
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 0;
+    margin: 5px;
+    width: 20em;
+    height: 80%;
+    background-color: #e2bf99;
+    opacity: 0.8;
+    border: 2px solid black;
+    display: none; /* inline-block;*/
+    /* display:inline-block; /**/
+    z-index: 113;
+    overflow: hidden;
+    color: black;
+    white-space: pre;
+    border-radius: 1em;
+}
+
+#bt-busy{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    font-size: 4em;
+    margin-top: -1em;
+}
+
+.bt_device{
+    cursor: pointer;
+    width: 100%;
+    background-color: transparent;
+}
+.bt_device p{
+    width: 100%;
+    font-size: 2em;
+    margin: 5px;
+    padding: 5px;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.bt_device p:hover{
+    background-color: black;
+    color: #e2bf99;
+}
+
+#search_btn, #close_btn{
+    font-size: 20px;
+    height: 24px;
+    width: 24px;
+    padding: 2px;
+    position: absolute;
+    top: 0;
+    cursor: pointer;
+}
+
+#search_btn{
+    right: 50px;
+}
+
+#close_btn{
+    right: 0;
+}
