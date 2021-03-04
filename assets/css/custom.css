@@ -180,7 +180,7 @@ a:hover, .url_name:hover, #multimedia_ctrl p:hover{
     opacity: 0.8;
     border: 2px solid black;
     display: none; /* inline-block;*/
-    /* display:inline-block; /**/
+    /*display:inline-block; /**/
     z-index: 113;
     overflow: hidden;
     color: black;
@@ -194,6 +194,7 @@ a:hover, .url_name:hover, #multimedia_ctrl p:hover{
     left: 50%;
     font-size: 4em;
     margin-top: -1em;
+    display: none;
 }
 
 .bt_device{
@@ -215,7 +216,7 @@ a:hover, .url_name:hover, #multimedia_ctrl p:hover{
     color: #e2bf99;
 }
 
-#search_btn, #close_btn{
+#search_btn, #close_btn, #disconnect_btn{
     font-size: 20px;
     height: 24px;
     width: 24px;
@@ -227,6 +228,10 @@ a:hover, .url_name:hover, #multimedia_ctrl p:hover{
 
 #search_btn{
     right: 50px;
+}
+
+#disconnect_btn{
+    right: 100px;
 }
 
 #close_btn{

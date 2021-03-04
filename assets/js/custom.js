@@ -57,6 +57,12 @@ function bt_list(){
     document.getElementById("bt_dev_list").innerHTML = "";
 }
 
+function bt_menu(){
+    document.getElementById("bt_overlay").style.display = "inline-block";
+    document.getElementById("bt-busy").style.display = "none";
+    document.getElementById("bt_dev_list").innerHTML = "";
+}
+
 function bt_connect(dev_id){
     send_cmd('bt_connect', dev_id);
     close_bt_overlay();
