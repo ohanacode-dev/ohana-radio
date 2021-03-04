@@ -40,7 +40,9 @@ SYS_CMD_PWR_OFF = ['/usr/sbin/poweroff']
 IP = None
 stop_flag = False
 
-BT_ctrl = BluetoothController()
+BT_ctrl = None
+
+DEFAULT_VOLUME = "30%"
 
 
 def run_process(command_list):
@@ -117,6 +119,7 @@ def get_song_title():
 def read_cfg_file():
     global CONFIG_FILE
     global PLS_PATH
+    global DEFAULT_VOLUME
 
     if not os.path.isfile(CONFIG_FILE):
         cfg_file = open(CONFIG_FILE, "w")
@@ -141,12 +144,15 @@ def read_cfg_file():
 
     BT_ctrl.connect_bt_device(bt_dev_mac)
 
+    DEFAULT_VOLUME = data.get('DEFAULT_VOLUME', DEFAULT_VOLUME)
+
 
 def update_cfg_file():
     data = {
         'PLS_PATH': PLS_PATH,
         'BT_DEV_NAME': BT_ctrl.get_default_bt_dev_name(),
-        'BT_DEV_MAC': BT_ctrl.get_default_bt_dev_mac()
+        'BT_DEV_MAC': BT_ctrl.get_default_bt_dev_mac(),
+        'DEFAULT_VOLUME': DEFAULT_VOLUME
     }
 
     cfg_file = open(CONFIG_FILE, "w")
@@ -316,17 +322,22 @@ def do_connect():
 def do_command(command, item_id=0):
     if command == "vol_dn":
         BT_ctrl.bt_volume_down()
+
     elif command == "vol_up":
         BT_ctrl.bt_volume_up()
+
     elif command == "pwr_off":
         cmd = SYS_CMD_PWR_OFF
         run_process(cmd)
+
     elif command == "mpc_stop":
         cmd = ['mpc', CMD_STOP]
         run_process(cmd)
         report()
+
     elif command == "mpc_save":
         savepls()
+
     elif command == "mpc_title":
         song_title = get_song_title()
         data = {'song_title': song_title}
@@ -356,12 +367,18 @@ def do_command(command, item_id=0):
 
 
 if __name__ == '__main__':
+    BT_ctrl = BluetoothController()
+
+    load_cfg()
+    read_cfg_file()
+    BT_ctrl.bt_volume_set(DEFAULT_VOLUME)
+
     cmd = ['mpc', CMD_CLEAR]
     run_process(cmd)
     cmd = ['mpc', CMD_LOAD, PLS_NAME]
     run_process(cmd)
+    cmd = ['mpc', CMD_PLAY, "1"]
+    run_process(cmd)
 
-    load_cfg()
-    read_cfg_file()
     socketio.run(app, host='0.0.0.0', port=WEB_PORT, debug=False)
     stop_flag = True

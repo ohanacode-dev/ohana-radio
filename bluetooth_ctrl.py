@@ -39,6 +39,11 @@ class BluetoothController:
     def get_default_bt_dev_name(self):
         return self.current_device_name
 
+    def bt_volume_set(self, value):
+        if self.current_device_name is not None:
+            cmd = 'amixer -D bluealsa set "' + self.current_device_name + ' - A2DP" ' + value
+            self.__run_process__(cmd)
+
     def bt_volume_up(self):
         if self.current_device_name is not None:
             cmd = 'amixer -D bluealsa set "' + self.current_device_name + ' - A2DP" 10%+'
