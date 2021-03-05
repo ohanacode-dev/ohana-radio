@@ -90,7 +90,7 @@ def get_mpc_current():
     global current
 
     # get currently playing
-    mpc_current = 0
+    current = 0
     cmd = ['mpc']
     status = run_process(cmd).split('\n')
 
