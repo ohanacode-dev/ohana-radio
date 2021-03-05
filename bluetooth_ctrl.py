@@ -4,6 +4,7 @@ Helper script to connect/disconnect from bluetooth device and control volume
 '''
 
 import subprocess
+import shlex
 
 
 CMD_POWER_ON = "bluetoothctl power on"
@@ -23,7 +24,7 @@ class BluetoothController:
 
     @staticmethod
     def __run_process__(command):
-        cmd = command.split(" ")
+        cmd = shlex.split(" ")
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
         return str(result.stdout, 'utf-8')
 
