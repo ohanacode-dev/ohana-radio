@@ -42,7 +42,7 @@ stop_flag = False
 
 BT_ctrl = None
 
-DEFAULT_VOLUME = "20%"
+DEFAULT_VOLUME = "30%"
 
 
 def run_process(command_list):

@@ -25,7 +25,6 @@ class BluetoothController:
     @staticmethod
     def __run_process__(command):
         cmd = shlex.split(command)
-        print(cmd)
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
         return str(result.stdout, 'utf-8')
 
